@@ -33,8 +33,13 @@
       "helmet": "^3.21.2",
       "jest": "^24.9.0",
       "jsonwebtoken": "^8.5.1",
+<<<<<<< HEAD
       "morgan": "^1.10.1",
       "mysql": "^2.17.1",
+=======
+      "morgan": "^1.9.1",
+      "mysql2": "^3.22.4",
+>>>>>>> 6df5e04eaee9e70488d35b3eed686fdd0e09cbc0
       "prettier": "^1.18.2",
       "prom-client": "^15.1.3",
       "reflect-metadata": "^0.1.10",
