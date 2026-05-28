@@ -8,14 +8,14 @@ export type productListProps = {
   children?: React.ReactNode;
 };
 
-function ProductList(props: productListProps): JSX.Element  {
+function ProductList(props: productListProps): React.ReactElement {
   const products: IProductState = useSelector((state: IStateType) => state.products);
 
-  const productElements: (JSX.Element | null)[] = products.products.map(product => {
+  const productElements: (React.ReactElement | null)[] = products.products.map(product => {
     if (!product) { return null; }
     return (<tr className={`table-row ${(products.selectedProduct && products.selectedProduct.id === product.id) ? "selected" : ""}`}
       onClick={() => {
-        if(props.onSelect) props.onSelect(product);
+        if (props.onSelect) props.onSelect(product);
       }}
       key={`product_${product.id}`}>
       <th scope="row">{product.id}</th>
@@ -26,11 +26,10 @@ function ProductList(props: productListProps): JSX.Element  {
     </tr>);
   });
 
-
   return (
     <div className="table-responsive portlet">
       <table className="table">
-        <thead className="thead-light">
+        <thead className="table-light">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
@@ -44,7 +43,6 @@ function ProductList(props: productListProps): JSX.Element  {
         </tbody>
       </table>
     </div>
-
   );
 }
 

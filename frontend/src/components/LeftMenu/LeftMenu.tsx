@@ -53,6 +53,19 @@ const LeftMenu: React.FC = () => {
                     </Link>
                 </li>
 
+                <hr className="sidebar-divider" />
+
+                <div className="sidebar-heading">
+                    Warehouse
+                </div>
+
+                <li className="nav-item">
+                    <Link className="nav-link" to='/inventory'>
+                        <i className="fas fa-fw fa-warehouse"></i>
+                        <span>Inventory</span>
+                    </Link>
+                </li>
+
                 <hr className="sidebar-divider d-none d-md-block" />
             </ul>
         </Fragment>

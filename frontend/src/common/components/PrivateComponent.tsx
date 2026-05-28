@@ -1,11 +1,12 @@
-import {RouteProps, Redirect } from "react-router";
 import React from "react";
-import useSession from 'react-session-hook';
+import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
+interface PrivateComponentProps {
+    children: React.ReactNode;
+}
 
-export function PrivateComponent({ children}: RouteProps): any {
-    const session = useSession();
-    return (
-        session.isAuthenticated ? children : <Redirect to={"/login"}/>
-    );
+export function PrivateComponent({ children }: PrivateComponentProps): any {
+    const token = Cookies.get("token");
+    return token ? children : <Navigate to="/login" replace />;
 }

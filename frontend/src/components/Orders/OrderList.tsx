@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { IOrder } from "../../store/models/order.interface";
 import { IStateType } from "../../store/models/root.interface";
@@ -6,7 +6,7 @@ import { IStateType } from "../../store/models/root.interface";
 const OrderList: React.FC = () => {
     const orders: IOrder[] = useSelector((state: IStateType) => state.orders.orders);
 
-    const orderList: JSX.Element[] = orders.map(order => {
+    const orderList: React.ReactElement[] = orders.map(order => {
         return (
             <tr className={`table-row`}
                 key={`order_${order.id}`}>
@@ -21,7 +21,7 @@ const OrderList: React.FC = () => {
     return (
         <div className="table-responsive portlet">
             <table className="table">
-                <thead className="thead-light">
+                <thead className="table-light">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>

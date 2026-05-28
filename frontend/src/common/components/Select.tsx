@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, Fragment } from "react";
 import { SelectProps } from "../types/Select.types";
 
-function SelectInput(props: SelectProps): JSX.Element {
+function SelectInput(props: SelectProps): React.ReactElement {
     const [touched, setTouch] = useState(false);
     const [error, setError] = useState("");
     const [htmlClass, setHtmlClass] = useState("");
@@ -23,7 +23,7 @@ function SelectInput(props: SelectProps): JSX.Element {
         setValue(elementValue);
     }
 
-    const getOptions: (JSX.Element | null)[] = props.options.map(option => {
+    const getOptions: (React.ReactElement | null)[] = props.options.map(option => {
         return (
             <option key={option} value={`${option}`}>{option}</option>
         )

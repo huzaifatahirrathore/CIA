@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { TextInputProps } from "../types/TextInput.types";
 
-function TextInput(props: TextInputProps): JSX.Element {
+function TextInput(props: TextInputProps): React.ReactElement {
     const [touched, setTouch] = useState(false);
     const [error, setError] = useState("");
     const [htmlClass, setHtmlClass] = useState("");

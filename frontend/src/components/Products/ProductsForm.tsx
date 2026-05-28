@@ -81,12 +81,12 @@ const ProductForm: React.FC = () => {
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
           <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-green">Product {(isCreate ? "create" : "edit")}</h6>
+            <h6 className="m-0 fw-bold text-green">Product {(isCreate ? "create" : "edit")}</h6>
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>
-              <div className="form-row">
-                <div className="form-group col-md-6">
+              <div className="row">
+                <div className="mb-3 col-md-6">
                   <TextInput id="input_email"
                     value={formState.name.value}
                     field="name"
@@ -96,7 +96,7 @@ const ProductForm: React.FC = () => {
                     label="Name"
                     placeholder="Name" />
                 </div>
-                <div className="form-group col-md-6">
+                <div className="mb-3 col-md-6">
                   <SelectInput
                     id="input_category"
                     field="category"
@@ -108,7 +108,7 @@ const ProductForm: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="form-group">
+              <div className="mb-3">
                 <TextInput id="input_description"
                 field = "description"
                   value={formState.description.value}
@@ -118,8 +118,8 @@ const ProductForm: React.FC = () => {
                   label="Description"
                   placeholder="Description" />
               </div>
-              <div className="form-row">
-                <div className="form-group col-md-6">
+              <div className="row">
+                <div className="mb-3 col-md-6">
                   <NumberInput id="input_amount"
                     value={formState.amount.value}
                     field="amount"
@@ -128,7 +128,7 @@ const ProductForm: React.FC = () => {
                     min={0}
                     label="Amount" />
                 </div>
-                <div className="form-group col-md-6">
+                <div className="mb-3 col-md-6">
                   <NumberInput id="input_price"
                     value={formState.price.value}
                     field="price"
@@ -138,7 +138,7 @@ const ProductForm: React.FC = () => {
                     label="Price" />
                 </div>
               </div>
-              <div className="form-group">
+              <div className="mb-3">
                 <Checkbox
                   id="checkbox_expiry"
                   field="hasExpiryDate"

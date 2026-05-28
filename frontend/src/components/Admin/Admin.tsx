@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
 import LeftMenu from "../LeftMenu/LeftMenu";
 import TopMenu from "../TopMenu/TopMenu";
-import { Switch } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import Users from "../Users/Users";
 import Home from "../Home/Home";
 import Notifications from "../../common/components/Notification";
-import {PrivateRoute} from "../../common/components/PrivateRoute";
+import { PrivateRoute } from "../../common/components/PrivateRoute";
+import Inventory from "../Inventory/Inventory";
 
 const Admin: React.FC = () => {
-
   return (
     <Fragment>
       <Notifications />
@@ -17,10 +17,11 @@ const Admin: React.FC = () => {
         <div id="content">
           <TopMenu />
           <div className="container-fluid">
-            <Switch>
-              <PrivateRoute exact path="/users"><Users /></PrivateRoute>
-              <PrivateRoute exact path="/"><Home /></PrivateRoute>
-            </Switch>
+            <Routes>
+              <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+              <Route path="/inventory" element={<PrivateRoute><Inventory /></PrivateRoute>} />
+              <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+            </Routes>
           </div>
         </div>
       </div>

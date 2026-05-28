@@ -90,12 +90,12 @@ const OrderForm: React.FC = () => {
         <Fragment>
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-green">Create order</h6>
+                    <h6 className="m-0 fw-bold text-green">Create order</h6>
                 </div>
                 <div className="card-body">
                     <form onSubmit={saveOrder}>
-                        <div className="form-row">
-                            <div className="form-group col-md-12">
+                        <div className="row">
+                            <div className="mb-3 col-md-12">
                                 <TextInput id="input_name"
                                     value={formState.name.value}
                                     field="name"
@@ -105,7 +105,7 @@ const OrderForm: React.FC = () => {
                                     label="Name"
                                     placeholder="Name" />
                             </div>
-                            <div className="form-group col-md-6">
+                            <div className="mb-3 col-md-6">
                                 <NumberInput id="input_amount"
                                     value={formState.amount.value}
                                     field="amount"
@@ -115,7 +115,7 @@ const OrderForm: React.FC = () => {
                                     label="Amount" />
                             </div>
 
-                            <div className="form-group col-md-6">
+                            <div className="mb-3 col-md-6">
                                 <NumberInput id="input_totalPrice"
                                     value={formState.totalPrice.value}
                                     field="totalPrice"

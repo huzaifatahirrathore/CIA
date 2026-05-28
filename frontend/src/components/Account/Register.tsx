@@ -51,7 +51,7 @@ const Register: React.FC = () => {
                         <h1 className="h4 text-gray-900 mb-4">Welcome!</h1>
                       </div>
                       <form className="user" onSubmit={submit}>
-                        <div className="form-group">
+                        <div className="mb-3">
 
                           <TextInput id="input_email"
                                      field="email"
@@ -62,7 +62,7 @@ const Register: React.FC = () => {
                                      label="Email"
                                      placeholder="Email" />
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                           <TextInput id="input_password"
                                      field="password"
                                      value={formState.password.value}
@@ -73,7 +73,7 @@ const Register: React.FC = () => {
                                      label="Password"
                                      placeholder="Password" />
                         </div>
-                        <div className="form-group">
+                        <div className="mb-3">
                           <TextInput id="input_password_conf"
                                      field="confPassword"
                                      value={formState.confPassword.value}
@@ -85,7 +85,7 @@ const Register: React.FC = () => {
                                      placeholder="Confirm Password" />
                         </div>
                         <button
-                            className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
+                            className={`btn btn-primary btn-user w-100 ${getDisabledClass()}`}
                             type="submit">
                           Register
                         </button>
