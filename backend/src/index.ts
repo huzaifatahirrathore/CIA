@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import "reflect-metadata";
@@ -9,6 +9,9 @@ import swaggerStats from "swagger-stats";
 import swaggerUi from "swagger-ui-express";
 import { createConnection } from "typeorm";
 import routes from "./routes";
+import logger from "./utils/logger";
+import { errorHandler } from "./middlewares/errorHandler";
+import testRoutes from "./routes/test.routes";
 
 const options = {
   swaggerDefinition: {
@@ -27,53 +30,70 @@ createConnection()
   .then(() => {
     const app = express();
 
-    // ---------------- MIDDLEWARES ----------------
+    // ---------------- SECURITY MIDDLEWARES ----------------
     app.use(cors());
     app.use(helmet());
 
-    // swagger stats
+    // ---------------- SWAGGER STATS ----------------
     app.use(swaggerStats.getMiddleware({}));
 
-    // body parser
+    // ---------------- BODY PARSER ----------------
     app.use(bodyParser.json());
 
     // ---------------- MORGAN CUSTOM TOKENS ----------------
-    morgan.token("header-auth", (req: Request) => {
-      return req.headers["auth"] as string || "";
-    });
-
     morgan.token("body", (req: Request) => {
       return JSON.stringify((req as any).body || {});
     });
 
-    // ---------------- LOGGING ----------------
+    morgan.token("auth-header", (req: Request) => {
+      return (req.headers["authorization"] as string) || "";
+    });
+
+    // ---------------- MORGAN LOGGING (TERMINAL + FILE READY) ----------------
     app.use(
-      morgan("[:date[web]] :method :url :remote-addr")
+      morgan("[:date[iso]] :method :url :status :response-time ms - :remote-addr", {
+        stream: {
+          write: (msg) => logger.info(msg.trim()),
+        },
+      })
     );
 
+    // Log request body (only for debugging, optional in production)
     app.use(
-      morgan("[:date[web]] token=:header-auth")
+      morgan("BODY => :body", {
+        stream: {
+          write: (msg) => logger.info(msg.trim()),
+        },
+      })
     );
 
+    // Log auth header (security tracking)
     app.use(
-      morgan("[:date[web]] body=:body")
-    );
-
-    app.use(
-      morgan("[:date[iso]] :status :res[content-length] - :response-time ms")
+      morgan("AUTH => :auth-header", {
+        stream: {
+          write: (msg) => logger.info(msg.trim()),
+        },
+      })
     );
 
     // ---------------- ROUTES ----------------
     app.use("/", routes);
 
-    // ---------------- SWAGGER ----------------
+    // ---------------- TEST ROUTES (FOR DEMO) ----------------
+    app.use("/test", testRoutes);
+
+    // ---------------- SWAGGER DOCS ----------------
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
+    // ---------------- GLOBAL ERROR HANDLER ----------------
+    app.use(errorHandler);
+
     // ---------------- START SERVER ----------------
-    app.listen(3000, () => {
-      console.log("Server started on port 3000!");
+    const PORT = Number(process.env.PORT) || 3000;
+    app.listen(PORT, () => {
+      logger.info(`Server started on port ${PORT}!`);
     });
   })
   .catch((error) => {
-    console.error("Database connection error:", error);
+    logger.error("Database connection error", error);
   });

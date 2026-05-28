@@ -1,0 +1,24 @@
+{"level":"info","message":"Server started on port 3002!","timestamp":"2026-05-28T15:55:40.456Z"}
+{"level":"info","message":"Winston log working","timestamp":"2026-05-28T15:55:41.607Z"}
+{"level":"info","message":"[2026-05-28T15:55:41.613Z] GET /test/logs 200 2.303 ms - ::1","timestamp":"2026-05-28T15:55:41.614Z"}
+{"level":"info","message":"BODY => {}","timestamp":"2026-05-28T15:55:41.614Z"}
+{"level":"info","message":"AUTH => -","timestamp":"2026-05-28T15:55:41.614Z"}
+{"level":"info","message":"[2026-05-28T15:55:42.691Z] POST /auth/login 200 34.322 ms - ::1","timestamp":"2026-05-28T15:55:42.691Z"}
+{"level":"info","message":"BODY => {\"username\":\"admin\",\"password\":\"admin\"}","timestamp":"2026-05-28T15:55:42.691Z"}
+{"level":"info","message":"AUTH => -","timestamp":"2026-05-28T15:55:42.692Z"}
+{"level":"info","message":"[2026-05-28T15:55:43.720Z] GET /auth/me 200 9.869 ms - ::1","timestamp":"2026-05-28T15:55:43.720Z"}
+{"level":"info","message":"BODY => {}","timestamp":"2026-05-28T15:55:43.720Z"}
+{"level":"info","message":"AUTH => Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzk5ODM3NDIsImV4cCI6MTc3OTk4NzM0Mn0.Vj27OsRvdO-qUL06If4HFqEIdANjwYHRwUD1-qYSmmM","timestamp":"2026-05-28T15:55:43.720Z"}
+{"level":"info","message":"[2026-05-28T15:55:44.775Z] POST /inventory 400 43.750 ms - ::1","timestamp":"2026-05-28T15:55:44.775Z"}
+{"level":"info","message":"BODY => {\"name\":\"Laptop\",\"quantity\":10,\"price\":999.99}","timestamp":"2026-05-28T15:55:44.775Z"}
+{"level":"info","message":"AUTH => Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzk5ODM3NDIsImV4cCI6MTc3OTk4NzM0Mn0.Vj27OsRvdO-qUL06If4HFqEIdANjwYHRwUD1-qYSmmM","timestamp":"2026-05-28T15:55:44.776Z"}
+{"level":"info","message":"[2026-05-28T15:55:45.795Z] GET /inventory 200 3.622 ms - ::1","timestamp":"2026-05-28T15:55:45.795Z"}
+{"level":"info","message":"BODY => {}","timestamp":"2026-05-28T15:55:45.796Z"}
+{"level":"info","message":"AUTH => Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3Nzk5ODM3NDIsImV4cCI6MTc3OTk4NzM0Mn0.Vj27OsRvdO-qUL06If4HFqEIdANjwYHRwUD1-qYSmmM","timestamp":"2026-05-28T15:55:45.796Z"}
+{"level":"info","message":"[2026-05-28T15:55:46.807Z] GET /inventory 401 0.494 ms - ::1","timestamp":"2026-05-28T15:55:46.807Z"}
+{"level":"info","message":"BODY => {}","timestamp":"2026-05-28T15:55:46.808Z"}
+{"level":"info","message":"AUTH => -","timestamp":"2026-05-28T15:55:46.808Z"}
+{"level":"error","message":"Forced error test","stack":"Error: Forced error test\n    at /home/huzaifa/CIA/backend/src/routes/test.routes.ts:15:9\n    at Layer.handle [as handle_request] (/home/huzaifa/CIA/backend/node_modules/express/lib/router/layer.js:95:5)\n    at next (/home/huzaifa/CIA/backend/node_modules/express/lib/router/route.js:149:13)\n    at Route.dispatch (/home/huzaifa/CIA/backend/node_modules/express/lib/router/route.js:119:3)\n    at Layer.handle [as handle_request] (/home/huzaifa/CIA/backend/node_modules/express/lib/router/layer.js:95:5)\n    at /home/huzaifa/CIA/backend/node_modules/express/lib/router/index.js:284:15\n    at Function.process_params (/home/huzaifa/CIA/backend/node_modules/express/lib/router/index.js:346:12)\n    at next (/home/huzaifa/CIA/backend/node_modules/express/lib/router/index.js:280:10)\n    at Function.handle (/home/huzaifa/CIA/backend/node_modules/express/lib/router/index.js:175:3)\n    at router (/home/huzaifa/CIA/backend/node_modules/express/lib/router/index.js:47:12)","timestamp":"2026-05-28T15:55:47.828Z"}
+{"level":"info","message":"[2026-05-28T15:55:47.830Z] GET /test/error 500 4.581 ms - ::1","timestamp":"2026-05-28T15:55:47.830Z"}
+{"level":"info","message":"BODY => {}","timestamp":"2026-05-28T15:55:47.830Z"}
+{"level":"info","message":"AUTH => -","timestamp":"2026-05-28T15:55:47.830Z"}
