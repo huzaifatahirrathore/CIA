@@ -27,7 +27,10 @@ body {
 }
 
 .popup-modal {
-    height: 70px;
+    height          : 70px;
+    background-color: white;
+    border-radius   : 4px;
+    overflow        : hidden;
 }
 
 .left-margin {
