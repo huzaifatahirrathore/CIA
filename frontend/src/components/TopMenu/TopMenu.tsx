@@ -14,7 +14,7 @@ const TopMenu: React.FC = () => {
         <li className="breadcrumb-item"><a href="# ">{page ? page.subArea : null}</a></li>
       </ol>
 
-      <ul className="navbar-nav ml-auto">
+      <ul className="navbar-nav ms-auto">
         <div className="topbar-divider d-none d-sm-block"></div>
         <TopMenuAccount />
       </ul>

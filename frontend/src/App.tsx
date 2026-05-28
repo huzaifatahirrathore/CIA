@@ -1,30 +1,28 @@
 import React from "react";
 import "./App.css";
 import "./styles/sb-admin-2.min.css";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Account/Login";
 import Admin from "./components/Admin/Admin";
 import Register from "./components/Account/Register";
-import {Route} from "react-router";
-import {PrivateComponent} from "./common/components/PrivateComponent";
-import {UseSessionProvider} from "react-session-hook";
+import { PrivateComponent } from "./common/components/PrivateComponent";
+import { UseSessionProvider as UseSessionProviderBase } from "react-session-hook";
+const UseSessionProvider = UseSessionProviderBase as React.ComponentType<{ children: React.ReactNode }>;
 
 const App: React.FC = () => {
     return (
         <UseSessionProvider>
             <div className="App" id="wrapper">
                 <Router>
-                    <PrivateComponent>
-                        <Admin />
-                    </PrivateComponent>
-                    <Switch>
-                        <Route exact path="/login">
-                            <Login />
-                        </Route>
-                        <Route exact path={"/register"}>
-                            <Register/>
-                        </Route>
-                    </Switch>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/*" element={
+                            <PrivateComponent>
+                                <Admin />
+                            </PrivateComponent>
+                        } />
+                    </Routes>
                 </Router>
             </div>
         </UseSessionProvider>

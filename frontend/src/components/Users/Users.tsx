@@ -28,7 +28,7 @@ const Users: React.FC = () => {
         dispatch(removeAdmin(admin));
     }
 
-    const userElements: JSX.Element[] = users.map(user => {
+    const userElements: React.ReactElement[] = users.map(user => {
         return (
             <tr className={`table-row`}
                 key={`user_${user.id}`}>
@@ -41,7 +41,7 @@ const Users: React.FC = () => {
             </tr>);
     });
 
-    const adminElements: JSX.Element[] = admins.map(admin => {
+    const adminElements: React.ReactElement[] = admins.map(admin => {
         return (
             <tr className={`table-row`}
                 key={`user_${admin.id}`}>
@@ -68,14 +68,14 @@ const Users: React.FC = () => {
                 <div className="col-xl-12 col-lg-12">
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
-                            <h6 className="m-0 font-weight-bold text-green">Admin List</h6>
+                            <h6 className="m-0 fw-bold text-green">Admin List</h6>
                             <div className="header-buttons">
                             </div>
                         </div>
                         <div className="card-body">
                             <div className="table-responsive portlet">
                                 <table className="table">
-                                    <thead className="thead-light">
+                                    <thead className="table-light">
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Username</th>
@@ -99,14 +99,14 @@ const Users: React.FC = () => {
                 <div className="col-xl-12 col-lg-12">
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
-                            <h6 className="m-0 font-weight-bold text-green">User List</h6>
+                            <h6 className="m-0 fw-bold text-green">User List</h6>
                             <div className="header-buttons">
                             </div>
                         </div>
                         <div className="card-body">
                             <div className="table-responsive portlet">
                                 <table className="table">
-                                    <thead className="thead-light">
+                                    <thead className="table-light">
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Username</th>

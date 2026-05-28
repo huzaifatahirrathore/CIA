@@ -1,0 +1,36 @@
+.inventory-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.row-action-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-green {
+    background-color: cadetblue !important;
+    border-color: cadetblue !important;
+    width: 40px;
+}
+
+.btn-blue {
+    background-color: lightblue !important;
+    border-color: lightblue !important;
+    width: 40px;
+}
+
+.btn-red {
+    background-color: indianred !important;
+    border-color: indianred !important;
+    width: 40px;
+}
+
+.table-row {
+    cursor: pointer;
+}
+
+.selected {
+    background-color: lavender;
+}

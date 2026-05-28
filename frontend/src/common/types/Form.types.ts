@@ -24,3 +24,11 @@ export  interface IOrderFormState {
     amount: IFormStateField<number>;
     totalPrice: IFormStateField<number>;
 };
+
+export interface IInventoryFormState {
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    quantity: IFormStateField<number>;
+    price: IFormStateField<number>;
+    category: IFormStateField<string>;
+}

@@ -76,6 +76,7 @@ export function register(email: string, password: string): any {
 }
 
 export function logout(): ILogOutActionType {
+    Cookies.remove('token');
     return { type: LOG_OUT};
 }
 

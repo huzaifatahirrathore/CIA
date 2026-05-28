@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { NumberInputProps } from "../types/NumberInput.types";
 
-function NumberInput(props: NumberInputProps): JSX.Element {
+function NumberInput(props: NumberInputProps): React.ReactElement {
     const [touched, setTouch] = useState(false);
     const [error, setError] = useState("");
     const [htmlClass, setHtmlClass] = useState("");

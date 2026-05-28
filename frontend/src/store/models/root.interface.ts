@@ -3,6 +3,7 @@ import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
 import { IOrder } from "./order.interface";
 import { IAccount } from "./account.interface";
+import { IInventory, InventoryModificationStatus } from "./inventory.interface";
 
 export interface IRootPageStateType {
     area: string;
@@ -19,6 +20,13 @@ export interface IStateType {
     users: IUserState;
     orders: IOrdersState;
     account: IAccount;
+    inventory: IInventoryState;
+}
+
+export interface IInventoryState {
+    items: IInventory[];
+    selectedItem: IInventory | null;
+    modificationState: InventoryModificationStatus;
 }
 
 export interface IProductState {
