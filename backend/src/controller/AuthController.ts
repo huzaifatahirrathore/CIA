@@ -143,7 +143,7 @@ class AuthController {
   };
 
   public static logout = async (_req: Request, res: Response) => {
-    const raw: string | undefined = req.cookies?.[REFRESH_COOKIE];
+    const raw: string | undefined = _req.cookies?.[REFRESH_COOKIE];
 
     if (raw) {
       await revokeRefreshToken(raw);
