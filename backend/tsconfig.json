@@ -16,6 +16,7 @@
       "sourceMap": true,
       "strictPropertyInitialization": false,
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "types": ["node", "jest"]
    }
 }
