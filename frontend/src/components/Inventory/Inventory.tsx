@@ -21,6 +21,7 @@ const Inventory: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const inventory: IInventoryState = useSelector((state: IStateType) => state.inventory);
   const path: IRootPageStateType = useSelector((state: IStateType) => state.root.page);
+  const isAdmin: boolean = useSelector((state: IStateType) => state.account.role === "ADMIN");
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
@@ -57,10 +58,12 @@ const Inventory: React.FC = () => {
           <div className="card shadow mb-4">
             <div className="card-header py-3 inventory-card-header">
               <h6 className="m-0 fw-bold text-green">Inventory List</h6>
-              <button className="btn btn-success btn-green" onClick={() =>
-                dispatch(setInventoryModificationState(InventoryModificationStatus.Create))}>
-                <i className="fas fa fa-plus"></i>
-              </button>
+              {isAdmin && (
+                <button className="btn btn-success btn-green" onClick={() =>
+                  dispatch(setInventoryModificationState(InventoryModificationStatus.Create))}>
+                  <i className="fas fa fa-plus"></i>
+                </button>
+              )}
             </div>
             <div className="card-body">
               <InventoryList onEdit={onRowEdit} onDelete={onRowDelete} />

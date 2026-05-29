@@ -1,16 +1,27 @@
-import {getRepository, MigrationInterface, QueryRunner} from 'typeorm';
-import {User} from '../entity/User';
+import { MigrationInterface, QueryRunner } from 'typeorm';
+import { User } from '../entity/User';
+import crypto from 'crypto';
 
 export class CreateAdminUser1572547308077 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    const existing = await queryRunner.manager.getRepository(User).findOne({ where: { username: 'admin' } });
+    if (existing) return;
+
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword) {
+      throw new Error(
+        'ADMIN_PASSWORD env var must be set before running migrations. ' +
+        'Use a strong password (min 8 chars, upper, lower, digit, special char).'
+      );
+    }
+
     const user = new User();
     user.username = 'admin';
-    user.password = 'admin';
+    user.password = adminPassword;
     user.hashPassword();
     user.role = 'ADMIN';
-    const userRepository = getRepository(User);
-    await userRepository.save(user);
+    await queryRunner.manager.getRepository(User).save(user);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {}
+  public async down(_queryRunner: QueryRunner): Promise<void> {}
 }

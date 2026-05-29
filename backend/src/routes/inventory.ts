@@ -9,15 +9,15 @@ const router = Router();
 router.get('/', [checkJwt], InventoryController.listAll);
 
 // Get one inventory item by id (auth required)
-router.get('/:id([0-9]+)', [checkJwt], InventoryController.getOne);
+router.get('/:id', [checkJwt], InventoryController.getOne);
 
 // Create new inventory item (ADMIN only)
 router.post('/', [checkJwt, checkRole(['ADMIN'])], InventoryController.create);
 
 // Update inventory item (ADMIN only)
-router.patch('/:id([0-9]+)', [checkJwt, checkRole(['ADMIN'])], InventoryController.update);
+router.patch('/:id', [checkJwt, checkRole(['ADMIN'])], InventoryController.update);
 
 // Delete inventory item (ADMIN only)
-router.delete('/:id([0-9]+)', [checkJwt, checkRole(['ADMIN'])], InventoryController.delete);
+router.delete('/:id', [checkJwt, checkRole(['ADMIN'])], InventoryController.delete);
 
 export default router;

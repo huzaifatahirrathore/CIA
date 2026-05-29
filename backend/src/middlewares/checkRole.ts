@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { AppDataSource } from '../data-source';
 import { User } from '../entity/User';
 
 export const checkRole = (roles: string[]) => {
@@ -10,12 +10,11 @@ export const checkRole = (roles: string[]) => {
       return res.status(401).send('No user found in token');
     }
 
-    const userRepository = getRepository(User);
-
+    const userRepository = AppDataSource.getRepository(User);
     let user: User;
 
     try {
-      user = await userRepository.findOneOrFail(id);
+      user = await userRepository.findOneOrFail({ where: { id } });
     } catch (error) {
       return res.status(401).send('User not found');
     }

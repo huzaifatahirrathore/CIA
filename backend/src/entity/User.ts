@@ -1,5 +1,6 @@
 import  {compareSync, hashSync} from 'bcryptjs';
-import {IsNotEmpty, Length} from 'class-validator';
+import {IsNotEmpty, Length, Matches} from 'class-validator';
+import config from '../config/config';
 import { Exclude } from 'class-transformer';
 import {
   Column,
@@ -23,7 +24,10 @@ export class User {
 
   @Column()
   @Exclude()
-  @Length(4, 100)
+  @Length(8, 100)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
+    message: 'Password must be at least 8 characters and contain uppercase, lowercase, number, and special character',
+  })
   public password: string;
 
   @Column()
@@ -39,7 +43,7 @@ export class User {
   public updatedAt: Date;
 
   public hashPassword() {
-    this.password = hashSync(this.password, 8);
+    this.password = hashSync(this.password, config.bcryptRounds);
   }
 
   public checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {

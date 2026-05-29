@@ -1,84 +1,67 @@
-import axios from "axios";
 import Cookies from "js-cookie";
-import {addNotification} from "./notifications.action";
+import apiClient from "../apiClient";
+import { tokenStore } from "../tokenStore";
+import { addNotification } from "./notifications.action";
 
-export const LOG_IN: string = "LOG_IN";
+export const LOG_IN: string  = "LOG_IN";
 export const REGISTER: string = "REGISTER";
 export const LOG_OUT: string = "LOG_OUT";
 
-const instance = axios.create({
-    baseURL: 'http://' + process.env.REACT_APP_API_URL,
-    timeout: 5000,
-    headers: {}
-});
-
-export function me(): any {
-
-    return async (dispatch : any) => {
+export function login(username: string, password: string): any {
+    return async (dispatch: any) => {
         try {
-            const response = await instance.get('/auth/me', {
-                headers: {
-                    auth: Cookies.get('token')
-                }
-            });
-            return dispatch({type: LOG_IN, email: response.data.username});
-        } catch (e) {
-            if (e.response === undefined) {
-                return dispatch(addNotification("Error", e.message));
-            }
-            return dispatch(addNotification("Error", "Session expired"));
+            const { data } = await apiClient.post('/auth/login', { username, password });
+            tokenStore.set(data.accessToken);
+            // Decode the JWT payload (no signature check — backend verifies on every request)
+            const payload = JSON.parse(atob(data.accessToken.split('.')[1]));
+            return dispatch({ type: LOG_IN, email: payload.username, role: payload.role });
+        } catch (e: any) {
+            const msg = e.response?.data?.error ?? e.response?.data ?? e.message;
+            return dispatch(addNotification("Error", msg));
         }
-    }
+    };
 }
 
-
-export function login(email: string, password: string): any {
-
-    return async (dispatch : any) => {
+export function refresh(): any {
+    return async (dispatch: any) => {
         try {
-            const response = await instance.post('/auth/login', {
-                username: email,
-                password: password
-            });
-            Cookies.set('token', response.data.token);
-            return dispatch({type: LOG_IN, email: email});
-        } catch (e) {
-            if (e.response === undefined) {
-                return dispatch(addNotification("Error", e.message));
-            }
-            return dispatch(addNotification("Error", e.response.data));
+            const { data } = await apiClient.post('/auth/refresh');
+            tokenStore.set(data.accessToken);
+            const payload = JSON.parse(atob(data.accessToken.split('.')[1]));
+            dispatch({ type: LOG_IN, email: payload.username, role: payload.role });
+            return true;
+        } catch {
+            Cookies.remove('loggedIn');
+            dispatch({ type: LOG_OUT });
+            return false;
         }
-    }
+    };
 }
 
-export function register(email: string, password: string): any {
-
-    return async (dispatch : any) => {
+export function register(username: string, password: string): any {
+    return async (dispatch: any) => {
         try {
-            const response = await instance.post('/auth/register', {
-                username: email,
-                password: password
-            });
-
-            dispatch(addNotification("Success", response.data));
-            return dispatch({type: REGISTER});
-        } catch (e) {
-            if (e.response === undefined) {
-                return dispatch(addNotification("Error", e.message));
+            const { data } = await apiClient.post('/auth/register', { username, password });
+            dispatch(addNotification("Success", data));
+            return dispatch({ type: REGISTER });
+        } catch (e: any) {
+            const body = e.response?.data;
+            if (Array.isArray(body) && body[0]?.constraints) {
+                const first = Object.values(body[0].constraints)[0] as string;
+                return dispatch(addNotification("Error", first));
             }
-            console.log(e.response.data);
-            if (e.response.data.length !== undefined) {
-                return dispatch(addNotification("Error", e.response.data[0].constraints.length));
-            }
-            return dispatch(addNotification("Error", e.response.data));
+            return dispatch(addNotification("Error", typeof body === "string" ? body : JSON.stringify(body)));
         }
-    }
+    };
 }
 
-export function logout(): ILogOutActionType {
-    Cookies.remove('token');
-    return { type: LOG_OUT};
+export function logout(): any {
+    return async (dispatch: any) => {
+        try {
+            await apiClient.post('/auth/logout');
+        } catch { /* best-effort */ }
+        tokenStore.clear();
+        Cookies.remove('loggedIn');
+        dispatch({ type: LOG_OUT });
+    };
 }
-
-interface ILogInActionType { type: string, email: string };
-interface ILogOutActionType { type: string };

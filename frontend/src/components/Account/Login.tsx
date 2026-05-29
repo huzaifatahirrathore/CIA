@@ -1,18 +1,17 @@
-import React, { useState, FormEvent, Dispatch } from "react";
-import { OnChangeModel } from "../../common/types/Form.types";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/actions/account.actions";
-import TextInput from "../../common/components/TextInput";
-import Notifications from "../../common/components/Notification";
-import { Link, Navigate } from "react-router-dom";
-
+import React, {useState, FormEvent, Dispatch} from 'react';
+import {OnChangeModel} from '../../common/types/Form.types';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../../store/actions/account.actions';
+import TextInput from '../../common/components/TextInput';
+import Notifications from '../../common/components/Notification';
+import {Link, Navigate} from 'react-router-dom';
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const [formState, setFormState] = useState({
-    email: { error: "", value: "" },
-    password: { error: "", value: "" }
+    email: {error: '', value: ''},
+    password: {error: '', value: ''},
   });
 
   const state = useSelector((state: any) => state.account);
@@ -22,23 +21,32 @@ const Login: React.FC = () => {
   }
 
   function hasFormValueChanged(model: OnChangeModel): void {
-    setFormState({ ...formState, [model.field]: { error: model.error, value: model.value } });
+    setFormState({
+      ...formState,
+      [model.field]: {error: model.error, value: model.value},
+    });
   }
 
   function submit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    if (isFormInvalid()) { return; }
+    if (isFormInvalid()) {
+      return;
+    }
     dispatch(login(formState.email.value, formState.password.value));
   }
 
   function isFormInvalid() {
-    return (formState.email.error || formState.password.error
-      || !formState.email.value || !formState.password.value);
+    return (
+      formState.email.error ||
+      formState.password.error ||
+      !formState.email.value ||
+      !formState.password.value
+    );
   }
 
   function getDisabledClass(): string {
     let isError: boolean = isFormInvalid() as boolean;
-    return isError ? "disabled" : "";
+    return isError ? 'disabled' : '';
   }
 
   return (
@@ -57,17 +65,20 @@ const Login: React.FC = () => {
                     </div>
                     <form className="user" onSubmit={submit}>
                       <div className="mb-3">
-                        <TextInput id="input_email"
+                        <TextInput
+                          id="input_email"
                           field="email"
                           value={formState.email.value}
                           onChange={hasFormValueChanged}
                           required={true}
                           maxLength={100}
-                          label="Email"
-                          placeholder="Email" />
+                          label="Email/Username"
+                          placeholder="Email/Username"
+                        />
                       </div>
                       <div className="mb-3">
-                        <TextInput id="input_password"
+                        <TextInput
+                          id="input_password"
                           field="password"
                           value={formState.password.value}
                           onChange={hasFormValueChanged}
@@ -75,12 +86,21 @@ const Login: React.FC = () => {
                           maxLength={100}
                           type="password"
                           label="Password"
-                          placeholder="Password" />
+                          placeholder="Password"
+                        />
                       </div>
                       <div className="mb-3">
                         <div className="form-check small">
-                          <input type="checkbox" className="form-check-input" id="customCheck" />
-                          <label className="form-check-label" htmlFor="customCheck">Remember Me</label>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id="customCheck"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="customCheck">
+                            Remember Me
+                          </label>
                         </div>
                       </div>
                       <button
@@ -90,9 +110,7 @@ const Login: React.FC = () => {
                       </button>
                     </form>
                     <div className="text-center">
-                      <Link to={"/register"}>
-                        No account ?
-                      </Link>
+                      <Link to={'/register'}>No account ?</Link>
                     </div>
                   </div>
                 </div>

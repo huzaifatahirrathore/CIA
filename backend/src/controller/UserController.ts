@@ -1,29 +1,24 @@
-import {validate} from 'class-validator';
-import {Request, Response} from 'express';
-import {getRepository} from 'typeorm';
-
-import {User} from '../entity/User';
+import { validate } from 'class-validator';
+import { Request, Response } from 'express';
+import { AppDataSource } from '../data-source';
+import { User } from '../entity/User';
 
 class UserController {
-  public static listAll = async (req: Request, res: Response) => {
-    // Get users from database
-    const userRepository = getRepository(User);
-    const users = await userRepository.find();
-
-    // Send the users object
+  public static listAll = async (_req: Request, res: Response) => {
+    const userRepository = AppDataSource.getRepository(User);
+    const users = await userRepository.find({
+      select: { id: true, username: true, role: true, createdAt: true, updatedAt: true },
+    });
     res.send(users);
   };
 
   public static getOneById = async (req: Request, res: Response) => {
-    // Get the ID from the url
     const id = Number(req.params.id);
-
-    // Get the user from database
-    const userRepository = getRepository(User);
+    const userRepository = AppDataSource.getRepository(User);
     try {
-      const user = await userRepository.findOneOrFail(id, {
-        relations: ['jpo', 'prospection'],
-        select: ['id', 'username', 'role'], // We dont want to send the password on response
+      const user = await userRepository.findOneOrFail({
+        where: { id },
+        select: { id: true, username: true, role: true },
       });
       res.status(200).send(user);
     } catch (error) {
@@ -32,8 +27,7 @@ class UserController {
   };
 
   public static newUser = async (req: Request, res: Response) => {
-    // Get parameters from the body
-    const {username, password, role} = req.body;
+    const { username, password, role } = req.body;
     const user = new User();
     user.username = username;
     user.password = password;
@@ -43,18 +37,15 @@ class UserController {
     }
     user.role = role;
 
-    // Validade if the parameters are ok
     const errors = await validate(user);
     if (errors.length > 0) {
       res.status(400).send(errors);
       return;
     }
 
-    // Hash the password, to securely store on DB
     user.hashPassword();
 
-    // Try to save. If fails, the username is already in use
-    const userRepository = getRepository(User);
+    const userRepository = AppDataSource.getRepository(User);
     try {
       await userRepository.save(user);
     } catch (e) {
@@ -62,29 +53,31 @@ class UserController {
       return;
     }
 
-    // If all ok, send 201 response
     res.status(201).send('User created');
   };
 
   public static editUser = async (req: Request, res: Response) => {
-    // Get the ID from the url
     const id = req.params.id;
+    const { username, role } = req.body;
 
-    // Get values from the body
-    const {username, role} = req.body;
-
-    // Try to find user on database
-    const userRepository = getRepository(User);
+    const userRepository = AppDataSource.getRepository(User);
     let user;
     try {
-     user = await userRepository.findOneOrFail({ where: { id } });
+      user = await userRepository.findOneOrFail({ where: { id: Number(id) } });
     } catch (error) {
-      // If not found, send a 404 response
       res.status(404).send('User not found');
       return;
     }
 
-    // Validate the new values on model
+    // Prevent demoting the last admin
+    if (user.role === 'ADMIN' && role === 'NORMAL') {
+      const adminCount = await userRepository.count({ where: { role: 'ADMIN' } });
+      if (adminCount <= 1) {
+        res.status(409).send('Cannot demote the last admin');
+        return;
+      }
+    }
+
     user.username = username;
     user.role = role;
     const errors = await validate(user);
@@ -93,22 +86,19 @@ class UserController {
       return;
     }
 
-    // Try to safe, if fails, that means username already in use
     try {
       await userRepository.save(user);
     } catch (e) {
       res.status(409).send('username already in use');
       return;
     }
-    // After all send a 204 (no content, but accepted) response
     res.status(204).send();
   };
 
   public static deleteUser = async (req: Request, res: Response) => {
-    // Get the ID from the url
-    const id = req.params.id;
+    const id = Number(req.params.id);
 
-    const userRepository = getRepository(User);
+    const userRepository = AppDataSource.getRepository(User);
     try {
       await userRepository.findOneOrFail({ where: { id } });
       await userRepository.delete(id);
@@ -117,7 +107,6 @@ class UserController {
       return;
     }
 
-    // After all send a 204 (no content, but accepted) response
     res.status(204).send();
   };
 }

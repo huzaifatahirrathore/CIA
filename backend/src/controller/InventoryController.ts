@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { AppDataSource } from '../data-source';
 import { Inventory } from '../entity/Inventory';
 import { validate } from 'class-validator';
 
 class InventoryController {
-  static listAll = async (req: Request, res: Response) => {
-    const inventoryRepository = getRepository(Inventory);
+  static listAll = async (_req: Request, res: Response) => {
+    const inventoryRepository = AppDataSource.getRepository(Inventory);
     const items = await inventoryRepository.find();
     res.send(items);
   };
 
   static getOne = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const inventoryRepository = getRepository(Inventory);
+    const inventoryRepository = AppDataSource.getRepository(Inventory);
     try {
-      const item = await inventoryRepository.findOneOrFail(id);
+      const item = await inventoryRepository.findOneOrFail({ where: { id } });
       res.send(item);
     } catch (error) {
       res.status(404).send('Inventory item not found');
@@ -36,7 +36,7 @@ class InventoryController {
       return;
     }
 
-    const inventoryRepository = getRepository(Inventory);
+    const inventoryRepository = AppDataSource.getRepository(Inventory);
     try {
       await inventoryRepository.save(item);
     } catch (e) {
@@ -49,10 +49,10 @@ class InventoryController {
   static update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const { name, description, quantity, price, category } = req.body;
-    const inventoryRepository = getRepository(Inventory);
+    const inventoryRepository = AppDataSource.getRepository(Inventory);
     let item;
     try {
-      item = await inventoryRepository.findOneOrFail(id);
+      item = await inventoryRepository.findOneOrFail({ where: { id } });
     } catch (error) {
       res.status(404).send('Inventory item not found');
       return;
@@ -79,10 +79,9 @@ class InventoryController {
 
   static delete = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const inventoryRepository = getRepository(Inventory);
-    let item;
+    const inventoryRepository = AppDataSource.getRepository(Inventory);
     try {
-      item = await inventoryRepository.findOneOrFail(id);
+      await inventoryRepository.findOneOrFail({ where: { id } });
     } catch (error) {
       res.status(404).send('Inventory item not found');
       return;

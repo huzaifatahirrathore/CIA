@@ -12,13 +12,14 @@ const Users: React.FC = () => {
     const dispatch: Dispatch<any> = useDispatch();
     dispatch(updateCurrentPath("user", "list"));
 
-
     useEffect(() => {
         dispatch(getUsers());
     }, [dispatch]);
 
     const users: IUser[] = useSelector((state: IStateType) => state.users.users);
     const admins: IUser[] = useSelector((state: IStateType) => state.users.admins);
+    const isAdmin: boolean = useSelector((state: IStateType) => state.account.role === "ADMIN");
+    const isLastAdmin: boolean = admins.length <= 1;
 
     function setUserAdmin(user: IUser): void {
         dispatch(addAdmin(user));
@@ -28,31 +29,41 @@ const Users: React.FC = () => {
         dispatch(removeAdmin(admin));
     }
 
-    const userElements: React.ReactElement[] = users.map(user => {
-        return (
-            <tr className={`table-row`}
-                key={`user_${user.id}`}>
-                <th scope="row">{user.id}</th>
-                <td>{user.username}</td>
-                <td>{user.role}</td>
-                <td><Moment fromNow={true}>{user.updatedAt}</Moment></td>
-                <td><Moment fromNow={true}>{user.createdAt}</Moment></td>
-                <td><button className="btn btn-success" onClick={() => setUserAdmin(user)}>Set admin</button> </td>
-            </tr>);
-    });
+    const adminElements: React.ReactElement[] = admins.map(admin => (
+        <tr className="table-row" key={`admin_${admin.id}`}>
+            <th scope="row">{admin.id}</th>
+            <td>{admin.username}</td>
+            <td>{admin.role}</td>
+            <td><Moment fromNow={true}>{admin.updatedAt}</Moment></td>
+            <td><Moment fromNow={true}>{admin.createdAt}</Moment></td>
+            {isAdmin && (
+                <td>
+                    {!isLastAdmin && (
+                        <button className="btn btn-danger btn-sm" onClick={() => setUserNotAdmin(admin)}>
+                            Revert admin
+                        </button>
+                    )}
+                </td>
+            )}
+        </tr>
+    ));
 
-    const adminElements: React.ReactElement[] = admins.map(admin => {
-        return (
-            <tr className={`table-row`}
-                key={`user_${admin.id}`}>
-                <th scope="row">{admin.id}</th>
-                <td>{admin.username}</td>
-                <td>{admin.role}</td>
-                <td><Moment fromNow={true}>{admin.updatedAt}</Moment></td>
-                <td><Moment fromNow={true}>{admin.createdAt}</Moment></td>
-                <td><button className="btn btn-danger" onClick={() => setUserNotAdmin(admin)}>Revert admin</button> </td>
-            </tr>);
-    });
+    const userElements: React.ReactElement[] = users.map(user => (
+        <tr className="table-row" key={`user_${user.id}`}>
+            <th scope="row">{user.id}</th>
+            <td>{user.username}</td>
+            <td>{user.role}</td>
+            <td><Moment fromNow={true}>{user.updatedAt}</Moment></td>
+            <td><Moment fromNow={true}>{user.createdAt}</Moment></td>
+            {isAdmin && (
+                <td>
+                    <button className="btn btn-success btn-sm" onClick={() => setUserAdmin(user)}>
+                        Set admin
+                    </button>
+                </td>
+            )}
+        </tr>
+    ));
 
     return (
         <Fragment>
@@ -61,7 +72,7 @@ const Users: React.FC = () => {
 
             <div className="row">
                 <TopCard title="ADMINS" text={admins.length.toString()} icon="user-tie" class="primary" />
-                <TopCard title="USER" text={users.length.toString()} icon="user" class="danger" />
+                <TopCard title="USERS" text={users.length.toString()} icon="user" class="danger" />
             </div>
 
             <div className="row">
@@ -69,24 +80,22 @@ const Users: React.FC = () => {
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
                             <h6 className="m-0 fw-bold text-green">Admin List</h6>
-                            <div className="header-buttons">
-                            </div>
                         </div>
                         <div className="card-body">
                             <div className="table-responsive portlet">
                                 <table className="table">
                                     <thead className="table-light">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Role</th>
-                                        <th scope="col">Update at</th>
-                                        <th scope="col">Created at</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Updated at</th>
+                                            <th scope="col">Created at</th>
+                                            {isAdmin && <th scope="col">Action</th>}
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {adminElements}
+                                        {adminElements}
                                     </tbody>
                                 </table>
                             </div>
@@ -100,24 +109,22 @@ const Users: React.FC = () => {
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
                             <h6 className="m-0 fw-bold text-green">User List</h6>
-                            <div className="header-buttons">
-                            </div>
                         </div>
                         <div className="card-body">
                             <div className="table-responsive portlet">
                                 <table className="table">
                                     <thead className="table-light">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Role</th>
-                                        <th scope="col">Update at</th>
-                                        <th scope="col">Created at</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Updated at</th>
+                                            <th scope="col">Created at</th>
+                                            {isAdmin && <th scope="col">Action</th>}
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    {userElements}
+                                        {userElements}
                                     </tbody>
                                 </table>
                             </div>
@@ -125,7 +132,7 @@ const Users: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </Fragment >
+        </Fragment>
     );
 };
 

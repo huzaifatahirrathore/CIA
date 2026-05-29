@@ -10,6 +10,7 @@ export type InventoryListProps = {
 
 function InventoryList(props: InventoryListProps): React.ReactElement {
   const inventory: IInventoryState = useSelector((state: IStateType) => state.inventory);
+  const isAdmin: boolean = useSelector((state: IStateType) => state.account.role === "ADMIN");
 
   const rows = inventory.items.map(item => {
     if (!item) return null;
@@ -26,22 +27,24 @@ function InventoryList(props: InventoryListProps): React.ReactElement {
         <td>${item.price}</td>
         <td>{item.description}</td>
         <td>
-          <div className="row-action-buttons">
-            <button
-              className="btn btn-sm btn-blue"
-              title="Edit"
-              onClick={() => props.onEdit(item)}
-            >
-              <i className="fas fa fa-pen"></i>
-            </button>
-            <button
-              className="btn btn-sm btn-red"
-              title="Delete"
-              onClick={() => props.onDelete(item)}
-            >
-              <i className="fas fa fa-times"></i>
-            </button>
-          </div>
+          {isAdmin && (
+            <div className="row-action-buttons">
+              <button
+                className="btn btn-sm btn-blue"
+                title="Edit"
+                onClick={() => props.onEdit(item)}
+              >
+                <i className="fas fa fa-pen"></i>
+              </button>
+              <button
+                className="btn btn-sm btn-red"
+                title="Delete"
+                onClick={() => props.onDelete(item)}
+              >
+                <i className="fas fa fa-times"></i>
+              </button>
+            </div>
+          )}
         </td>
       </tr>
     );

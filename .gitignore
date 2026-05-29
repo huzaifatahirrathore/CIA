@@ -3,5 +3,5 @@ dist
 .env
 .env.*
 coverage
-.DS_Storenode_modules
-dist
+.DS_Store
+backend/certs/
